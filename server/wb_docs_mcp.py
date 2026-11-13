@@ -142,7 +142,19 @@ async def _is_country(name: str) -> bool:
 
 # ---------- input models (constraints live here; descriptions live on the tool args) ----------
 
-class Page(BaseModel):
+class Input(BaseModel):
+    @model_validator(mode="before")
+    @classmethod
+    def _blank_is_omitted(cls, data: Any) -> Any:
+        """Inspector and small models send "" for an empty optional argument: treat it as omitted.
+        Only fields defaulting to None; required ones (query, document_id, field) still reject ""."""
+        if not isinstance(data, dict):
+            return data
+        optional = {k for k, f in cls.model_fields.items() if f.default is None}
+        return {k: None if k in optional and isinstance(v, str) and not v.strip() else v for k, v in data.items()}
+
+
+class Page(Input):
     rows: int = Field(10, ge=1, le=20)
     offset: int = Field(0, ge=0, le=100_000)  # API returns HTTP 400 above this
     newest_first: bool = False
@@ -179,11 +191,11 @@ class FilterInput(Page):
         return self
 
 
-class DocumentInput(BaseModel):
+class DocumentInput(Input):
     document_id: str = Field(..., pattern=r"^D?\d+$")
 
 
-class FacetInput(BaseModel):
+class FacetInput(Input):
     field: FacetField
     query: str | None = None
 

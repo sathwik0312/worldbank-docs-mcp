@@ -30,8 +30,10 @@ class FakeAPI:
 
     async def __call__(self, params):
         self.calls.append(params)
+        if params.get("count_exact", "Kenya") not in self.countries:  # exact filters are case-sensitive
+            return {"total": 0, "documents": {"facets": {}}}
         if set(params) == {"count_exact", "rows"} and params["rows"] == 0:  # _is_country lookup
-            return {"total": 7 if params["count_exact"] in self.countries else 0, "documents": {"facets": {}}}
+            return {"total": 7, "documents": {"facets": {}}}
         return {"total": 1, "documents": {"D1": self.doc, "facets": {}}}
 
     def searches(self):
@@ -135,6 +137,27 @@ def test_get_document_renames_count_to_country_in_place(api):
     doc = call("get_document", document_id="1")
     assert doc["country"] == "Kenya" and "count" not in doc
     assert list(doc) == ["id", "display_title", "docdt", "country", "pdfurl", "keywd"]  # same position
+
+
+# ---------- blank optional arguments ("" from Inspector and small models) ----------
+
+def test_blank_dates_are_omitted_so_the_case_hint_comes_back(api):
+    result = call("filter_documents", country="kenya", start_date="", end_date="")
+    assert "case-sensitive" in result["message"] and result["total"] == 0
+    (search,) = api.searches()
+    assert search["count_exact"] == "kenya" and search["strdate"] is None and search["enddate"] is None
+
+
+def test_region_as_country_with_blank_dates_returns_results_and_note(api):
+    result = call("filter_documents", country="Sub-Saharan Africa", start_date=" ", end_date="")
+    assert result["note"] == "Note: 'Sub-Saharan Africa' is a region; searched by region."
+    assert result["total"] == 1 and len(result["documents"]) == 1
+
+
+def test_blank_language_is_no_filter_but_blank_query_is_still_rejected(api):
+    result = call("search_documents", query="water", language="")
+    assert result["total"] == 1 and api.searches()[0]["lang_exact"] is None
+    assert call("search_documents", query="")["message"].startswith("Invalid arguments. query:")
 
 
 # ---------- validation hints (returned as results, API never called) ----------
