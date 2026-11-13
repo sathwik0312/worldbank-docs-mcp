@@ -53,6 +53,8 @@ the Ollama app, or run this in a second terminal and leave it running:
 ollama serve
 ```
 
+If you see 'address already in use', Ollama is already running (the Mac app starts it automatically). Skip this step.
+
 **4. Model.** Back in the first terminal (the model download is ~4.7 GB):
 
 ```bash
@@ -68,9 +70,11 @@ calls, so the agent needs room for the system prompt, four tool schemas, two res
 
 ## Run
 
+Run with no argument for interactive mode; a blank line or Ctrl-D exits.
+
 ```bash
 python client/agent.py "Find the most recent economic sector work on Indonesia."
-python client/agent.py          # interactive; blank line or Ctrl-D exits
+python client/agent.py
 ```
 
 ## LLM choice: Ollama + qwen2.5:7b
@@ -175,8 +179,10 @@ reported as "pass (tie at page boundary)" (the API breaks relevance ties at rand
 a swapped ranking and a wrong count. It confirms each is caught and that the real entries pass. It also
 cites a document from position `rows` + 2 (must pass as a tie) and an invented one (must still fail).
 
+Requires Ollama to be running.
+
 ```bash
-python scripts/run_eval.py --runs 3     # needs Ollama running
+python scripts/run_eval.py --runs 3
 python scripts/check_citations.py
 python scripts/check_citations.py --self-test
 ```
@@ -272,10 +278,12 @@ server card to connect, then open the **Tools** tab to list and call the four to
 
 ### Offline tests
 
-Offline test suite (the HTTP helper is mocked, so nothing touches the network):
+Offline test suite (the HTTP helper is mocked, so nothing touches the network).
+
+Installs pytest. With a plain venv, use `pip install -r requirements-dev.txt`.
 
 ```bash
-uv pip install -r requirements-dev.txt    # adds pytest; with plain venv: pip install -r requirements-dev.txt
+uv pip install -r requirements-dev.txt
 pytest
 ```
 
