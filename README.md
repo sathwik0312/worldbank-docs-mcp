@@ -96,7 +96,8 @@ Defaults are `http://localhost:11434/v1`, `wb-qwen:latest`, `ollama`.
 
 Search and filter results return `total`, `next_offset` and trimmed documents: `id`, `display_title`,
 `docdt`, `docty`, `majdocty`, `country`, `pdfurl` and an abstract cut to 300 characters.
-`get_document` returns every field as the API sends it, except `keywd`, which is capped (below).
+`get_document` returns every field as the API sends it, except `count` (renamed `country`) and `keywd`
+(stripped and capped, below).
 
 ## What the live API actually does
 
@@ -109,11 +110,12 @@ All of these were found by calling the API, not from the docs:
 - **A malformed date returns HTTP 500** with a server stack trace, so dates are validated before any call.
 - **An offset above 100,000 returns HTTP 400**, so `offset` is capped at 100,000.
 - **`count` is the API's country field** (e.g. `"count": "Kenya"`). Next to `total` and `returned` a
-  model can read it as a number, so it is renamed to `country` in search/filter output. The rename keeps
+  model can read it as a number, so it is renamed to `country` in every tool result. The rename keeps
   the field's position: a first version that moved `country` after `pdfurl` cut Q2 from 10 PDF links to 0
   in 3/3 runs (with `count` restored: 10 in 3/3).
 - **`keywd` lists often run to 100–200 entries** (in a sample of 30 documents). `get_document` keeps the
-  first 20 and adds `"keywd_truncated": true` when it cuts.
+  first 20 and adds `"keywd_truncated": true` when it cuts. Many entries start with a space
+  (e.g. `" market value of land"`), so each one is stripped.
 - **"Sub-Saharan Africa" is not a region value** (0 results). The region field (`admreg_exact`) splits
   it into "Eastern and Southern Africa" and "Western and Central Africa", plus an older "Africa" label.
   The server expands "Sub-Saharan Africa" to all three (`^` ORs values).
@@ -177,7 +179,8 @@ python scripts/check_citations.py --self-test
 
 ## Examples
 
-Real runs from [examples/](examples/) (round A; Q2 is from the final set). Long lists are shortened with "…".
+Real runs from [examples/](examples/): run 1 of each question in the final 18-run set. Long lists are
+shortened with "…".
 
 **Q2. Find documents about education financing in Sub-Saharan Africa published between 2019 and 2022.**
 
@@ -213,40 +216,36 @@ Real runs from [examples/](examples/) (round A; Q2 is from the final set). Long 
 **Q4. Find the most recent economic sector work on Indonesia.**
 
 ```
--> filter_documents {"country": "Indonesia", "newest_first": true, "rows": 1, "major_document_type": "Economic & Sector Work"}
-<- 720 chars
+-> filter_documents {"major_document_type": "Economic & Sector Work", "country": "Indonesia", "newest_first": true, "rows": 1}
+<- 722 chars
 ```
 ```
-The most recent economic sector work on Indonesia is titled "Indonesia - Country Private Sector Diagnostic". Here are the details:
+The most recent economic sector work on Indonesia is titled "Indonesia - Country Private Sector Diagnostic". It was published on October 5, 2026. You can access the document [here](https://documents.worldbank.org/curated/en/099753310052628862/pdf/IDU-2c04a71f-c12a-4c70-b9f9-a1111c195bc1.pdf).
 
-- **Title**: Indonesia - Country Private Sector Diagnostic
-- **Date**: 2026-10-05
-- **Link**: [Download PDF](https://documents.worldbank.org/curated/en/099753310052628862/pdf/IDU-2c04a71f-c12a-4c70-b9f9-a1111c195bc1.pdf)
-
-The abstract provides an overview of the document, noting that Indonesia has seen rapid economic growth and
-significant poverty reduction, driven by the private sector. However, growth has slowed due to restrictions
-that have insulated dominant firms, hindering investment in higher-productivity and higher-paying sectors.
+Here's a brief abstract: Indonesia has achieved rapid economic growth and substantial poverty reduction over the past five decades, driven significantly by the private sector. …
 ```
 
-**Q6. Find project documents related to water and sanitation in Brazil.**
+**Q6. Find project documents related to water and sanitation in Brazil.** This run is the one in the
+final set that left out every PDF link, although the tool result had a `pdfurl` for each document (runs 2
+and 3 linked all 10).
 
 ```
--> filter_documents {"query": "sanitation", "rows": 10, "country": "Brazil", "major_document_type": "Project Documents", "topic": "Water Resources"}
-<- 5418 chars
+-> filter_documents {"country": "Brazil", "major_document_type": "Project Documents", "topic": "Water Resources", "query": "sanitation", "rows": 10}
+<- 5438 chars
 ```
 ```
 1. **Title**: Brazil - Minas Gerais Water Quality and Pollution Control Project
    - **Date**: 2000-05-05
+   - **Document Type**: Implementation Completion and Results Report
    - **Abstract**: The outcome of the project is rated satisfactory. …
-   - [PDF Link](http://documents.worldbank.org/curated/en/764031468020346795/pdf/multi-page.pdf)
 
 2. **Title**: Concept Project Information Document-Integrated Safeguards Data Sheet - SABESP Improving Water and Sanitation Service Access - P165695
    - **Date**: 2018-06-07
-   - [PDF Link](http://documents.worldbank.org/curated/en/253671528402594449/pdf/Concept-Project-Information-Document-Integrated-Safeguards-Data-Sheet-SABESP-Improving-Water-and-Sanitation-Service-Access-P165695.pdf)
+   - **Document Type**: Project Information and Integrated Safeguards Data Sheet
 …
 4. **Title**: Brazil - Technical Assistance and Pilot Rural Water Supply and Sanitation Project
    - **Date**: 1993-01-12
-   - [PDF Link](http://documents.worldbank.org/curated/en/375321468232734558/pdf/multi-page.pdf)
+   - **Document Type**: Project Completion Report
 …
 ```
 
@@ -277,8 +276,8 @@ pytest
 ```
 
 It covers whole-document truncation and the offset note, the region/country fallback both ways, date
-validation, the "no filters" hint, the unknown facet field hint, the `count` → `country` rename and the
-`keywd` cap.
+validation, the "no filters" hint, the unknown facet field hint, the `count` → `country` rename (in place,
+in both summaries and `get_document`) and the `keywd` strip and cap.
 
 ## Known limitations
 

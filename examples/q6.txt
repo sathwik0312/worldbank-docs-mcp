@@ -2,51 +2,51 @@ QUESTION: Find project documents related to water and sanitation in Brazil.
 
 === TRACE (stderr) ===
 model=wb-qwen:latest tools=['search_documents', 'filter_documents', 'get_document', 'get_facets']
--> filter_documents {"query": "sanitation", "rows": 10, "country": "Brazil", "major_document_type": "Project Documents", "topic": "Water Resources"}
-<- 5418 chars
+-> filter_documents {"country": "Brazil", "major_document_type": "Project Documents", "topic": "Water Resources", "query": "sanitation", "rows": 10}
+<- 5438 chars
 
 === ANSWER (stdout) ===
 Here are some project documents related to water and sanitation in Brazil:
 
 1. **Title**: Brazil - Minas Gerais Water Quality and Pollution Control Project
    - **Date**: 2000-05-05
+   - **Document Type**: Implementation Completion and Results Report
    - **Abstract**: The outcome of the project is rated satisfactory. Lessons learned include the need for clear distinction between long-term and short- to medium-term project objectives, and the importance of monitoring.
-   - [PDF Link](http://documents.worldbank.org/curated/en/764031468020346795/pdf/multi-page.pdf)
 
 2. **Title**: Concept Project Information Document-Integrated Safeguards Data Sheet - SABESP Improving Water and Sanitation Service Access - P165695
    - **Date**: 2018-06-07
-   - [PDF Link](http://documents.worldbank.org/curated/en/253671528402594449/pdf/Concept-Project-Information-Document-Integrated-Safeguards-Data-Sheet-SABESP-Improving-Water-and-Sanitation-Service-Access-P165695.pdf)
+   - **Document Type**: Project Information and Integrated Safeguards Data Sheet
 
 3. **Title**: Brazil - Esprito Santo Water and Coastal Pollution Management Project - Additional Financing
    - **Date**: 2004-05-24
-   - [PDF Link](http://documents.worldbank.org/curated/en/945521468769736241/pdf/t76190BR.pdf)
+   - **Document Type**: Technical Annex
 
 4. **Title**: Brazil - Technical Assistance and Pilot Rural Water Supply and Sanitation Project
    - **Date**: 1993-01-12
-   - [PDF Link](http://documents.worldbank.org/curated/en/375321468232734558/pdf/multi-page.pdf)
+   - **Document Type**: Project Completion Report
 
 5. **Title**: Brazil - Technical Assistance and Pilot Rural Water Supply and Sanitation Project
    - **Date**: 1985-04-30
-   - [PDF Link](http://documents.worldbank.org/curated/en/715051468016781871/pdf/multi-page.pdf)
+   - **Document Type**: Staff Appraisal Report
 
 6. **Title**: Brazil - Espirito Santo Water and Coastal Pollution Management Project
    - **Date**: 2004-04-07
-   - [PDF Link](http://documents.worldbank.org/curated/en/159401468768856361/pdf/27848.pdf)
+   - **Document Type**: Implementation Completion and Results Report
 
 7. **Title**: Brazil - LATIN AMERICA AND CARIBBEAN- P147157- BRAZIL BAHIA SUSTAINABLE RURAL DEVELOPMENT PROJECT - Procurement Plan
    - **Date**: 2018-09-18
-   - [PDF Link](http://documents.worldbank.org/curated/en/374621579907152364/pdf/Brazil-LATIN-AMERICA-AND-CARIBBEAN-P147157-BRAZIL-BAHIA-SUSTAINABLE-RURAL-DEVELOPMENT-PROJECT-Procurement-Plan.pdf)
+   - **Document Type**: Procurement Plan
 
 8. **Title**: Brazil - Espirito Santo Integrated Sustainable Water Management Project
    - **Date**: 2014-02-26
-   - [PDF Link](http://documents.worldbank.org/curated/en/789111468015871663/pdf/804430PAD0P130010Box382166B00OUO090.pdf)
+   - **Document Type**: Project Appraisal Document
 
-9. **Title**: Brazil - LATIN AMERICA AND CARIBBEAN- P112074- BR Sergipe Water - Procurement Plan
-   - **Date**: 2020-01-04
-   - [PDF Link](http://documents.worldbank.org/curated/en/382171578100300364/pdf/Brazil-LATIN-AMERICA-AND-CARIBBEAN-P112074-BR-Sergipe-Water-Procurement-Plan.pdf)
+9. **Title**: Brazil - LATIN AMERICA AND CARIBBEAN- P147157- BRAZIL BAHIA SUSTAINABLE RURAL DEVELOPMENT PROJECT - Procurement Plan
+   - **Date**: 2018-09-27
+   - **Document Type**: Procurement Plan
 
-10. **Title**: Brazil - LATIN AMERICA AND CARIBBEAN- P147157- BRAZIL BAHIA SUSTAINABLE RURAL DEVELOPMENT PROJECT - Procurement Plan
-    - **Date**: 2018-09-27
-    - [PDF Link](http://documents.worldbank.org/curated/en/964751580190668184/pdf/Brazil-LATIN-AMERICA-AND-CARIBBEAN-P147157-BRAZIL-BAHIA-SUSTAINABLE-RURAL-DEVELOPMENT-PROJECT-Procurement-Plan.pdf)
+10. **Title**: Brazil - LATIN AMERICA AND CARIBBEAN- P112074- BR Sergipe Water - Procurement Plan
+    - **Date**: 2020-01-04
+    - **Document Type**: Procurement Plan
 
-Would you like more documents or details on any of these?
+You can access these documents via the provided PDF links.

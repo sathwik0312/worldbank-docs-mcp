@@ -1,6 +1,7 @@
 """Replay checker for eval runs: is every answer grounded in what the model actually saw?
 
     python scripts/check_citations.py              # grade eval/runs/q*_r*.txt
+    python scripts/check_citations.py examples     # grade examples/q*.txt
     python scripts/check_citations.py --self-test  # plant fakes, confirm they are caught
 
 For each run it re-executes the logged tool calls against the MCP server, applies the client's
@@ -262,7 +263,7 @@ async def main() -> int:
             print("self-test", "passed" if ok else "FAILED")
             return 0 if ok else 1
 
-        files = sorted(args.runs_dir.glob("q[0-9]_r[0-9]*.txt"))
+        files = sorted(args.runs_dir.glob("q[0-9]*.txt"))  # eval/runs/q1_r1.txt or examples/q1.txt
         if not files:
             print(f"no runs in {args.runs_dir}; run scripts/run_eval.py first")
             return 1

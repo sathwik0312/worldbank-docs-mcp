@@ -2,55 +2,52 @@ QUESTION: What World Bank reports exist on climate resilience in Kenya?
 
 === TRACE (stderr) ===
 model=wb-qwen:latest tools=['search_documents', 'filter_documents', 'get_document', 'get_facets']
--> filter_documents {"country": "Kenya", "topic": "climate resilience", "rows": 10}
+-> filter_documents {"topic": "climate resilience", "rows": 10, "country": "Kenya"}
 <- 257 chars
--> search_documents {"query": "climate resilience Kenya", "rows": 10}
-<- 5327 chars
+-> search_documents {"rows": 10, "query": "climate resilience Kenya"}
+<- 5347 chars
 
 === ANSWER (stdout) ===
 Here are some World Bank reports related to climate resilience in Kenya:
 
 1. **Title**: Kenya - Coastal Region Water Security and Climate Resilience Project : Resettlement Plan (Vol. 4 of 4) : Resettlement Action Plan 2 for Mwache Multipurpose Dam Project
    - **Date**: 2021-07-01
-   - **Link**: [PDF](http://documents.worldbank.org/curated/en/633061627382758577/pdf/Resettlement-Action-Plan-2-for-Mwache-Multipurpose-Dam-Project.pdf)
-   - **Abstract**: The development objective of the Coastal Region Water Security and Climate Resilience Project for Kenya is to sustainably increase bulk water supply to Mombasa County and Kwale County and increase access to water and sanitation in Kwale County.
+   - **Link**: [Resettlement Action Plan 2 for Mwache Multipurpose Dam Project](http://documents.worldbank.org/curated/en/633061627382758577/pdf/Resettlement-Action-Plan-2-for-Mwache-Multipurpose-Dam-Project.pdf)
 
 2. **Title**: Kenya - Water Security and Climate Resilience Project : audited financial statement - year ending June 30, 2014
    - **Date**: 2015-07-29
-   - **Link**: [PDF](http://documents.worldbank.org/curated/en/948341438174804516/pdf/Kenya-Water-Security-and-Climate-Resilience-Project-audited-financial-statement-year-ending-June-30-2014.pdf)
+   - **Link**: [Audited Financial Statement](http://documents.worldbank.org/curated/en/948341438174804516/pdf/Kenya-Water-Security-and-Climate-Resilience-Project-audited-financial-statement-year-ending-June-30-2014.pdf)
 
 3. **Title**: Kenya - Coastal Region Water Security and Climate Resilience Project : Resettlement Plan (Vol. 3 of 4) : Resettlement Action Plan 1b for Mwache Multipurpose Dam Project
    - **Date**: 2021-02-01
-   - **Link**: [PDF](http://documents.worldbank.org/curated/en/533081616664378297/pdf/Resettlement-Action-Plan-1b-for-Mwache-Multipurpose-Dam-Project.pdf)
-   - **Abstract**: The development objective of the Coastal Region Water Security and Climate Resilience Project for Kenya is to sustainably increase bulk water supply to Mombasa County and Kwale County and increase access to water and sanitation in Kwale County.
+   - **Link**: [Resettlement Action Plan 1b for Mwache Multipurpose Dam Project](http://documents.worldbank.org/curated/en/533081616664378297/pdf/Resettlement-Action-Plan-1b-for-Mwache-Multipurpose-Dam-Project.pdf)
 
 4. **Title**: Disclosable Restructuring Paper - Kenya Water Security and Climate Resilience Project - P117635
    - **Date**: 2020-12-15
-   - **Link**: [PDF](http://documents.worldbank.org/curated/en/595061608021784702/pdf/Disclosable-Restructuring-Paper-Kenya-Water-Security-and-Climate-Resilience-Project-P117635.pdf)
-   - **Abstract**: The development objectives of Water Security and Climate Resilience Project for Kenya are to: (a) increase availability and productivity of irrigation water for project beneficiaries; and (b) enhance the institutional framework and strengthen capacity for water security and climate resilience in certain areas.
+   - **Link**: [Disclosable Restructuring Paper](http://documents.worldbank.org/curated/en/595061608021784702/pdf/Disclosable-Restructuring-Paper-Kenya-Water-Security-and-Climate-Resilience-Project-P117635.pdf)
 
 5. **Title**: Kenya - Kenya Water Security and Climate Resilience Project : P117635 - Implementation Status Results Report : Sequence 04
    - **Date**: 2015-12-02
-   - **Link**: [PDF](http://documents.worldbank.org/curated/en/166371468276327274/pdf/Kenya-Kenya-Water-Security-and-Climate-Resilience-Project-P117635-Implementation-Status-Results-Report-Sequence-04.pdf)
+   - **Link**: [Implementation Status Results Report](http://documents.worldbank.org/curated/en/166371468276327274/pdf/Kenya-Kenya-Water-Security-and-Climate-Resilience-Project-P117635-Implementation-Status-Results-Report-Sequence-04.pdf)
 
 6. **Title**: Kenya - AFRICA EAST- P117635- Kenya Water Security and Climate Resilience Project - Procurement Plan
    - **Date**: 2020-08-28
-   - **Link**: [PDF](http://documents.worldbank.org/curated/en/680011598604723772/pdf/Kenya-AFRICA-EAST-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
+   - **Link**: [Procurement Plan](http://documents.worldbank.org/curated/en/680011598604723772/pdf/Kenya-AFRICA-EAST-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
 
 7. **Title**: Kenya - AFRICA- P117635- Kenya Water Security and Climate Resilience Project - Procurement Plan
    - **Date**: 2018-11-08
-   - **Link**: [PDF](http://documents.worldbank.org/curated/en/246191541666416527/pdf/Kenya-AFRICA-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
+   - **Link**: [Procurement Plan](http://documents.worldbank.org/curated/en/246191541666416527/pdf/Kenya-AFRICA-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
 
 8. **Title**: Kenya - AFRICA EAST- P117635- Kenya Water Security and Climate Resilience Project - Procurement Plan
    - **Date**: 2021-11-03
-   - **Link**: [PDF](http://documents.worldbank.org/curated/en/814961635917753265/pdf/Kenya-AFRICA-EAST-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
+   - **Link**: [Procurement Plan](http://documents.worldbank.org/curated/en/814961635917753265/pdf/Kenya-AFRICA-EAST-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
 
 9. **Title**: Kenya - AFRICA- P117635- Kenya Water Security and Climate Resilience Project - Procurement Plan
    - **Date**: 2018-11-07
-   - **Link**: [PDF](http://documents.worldbank.org/curated/en/556051541599546079/pdf/Kenya-AFRICA-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
+   - **Link**: [Procurement Plan](http://documents.worldbank.org/curated/en/556051541599546079/pdf/Kenya-AFRICA-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
 
 10. **Title**: Kenya - AFRICA EAST- P117635- Kenya Water Security and Climate Resilience Project - Procurement Plan
-    - **Date**: 2021-05-26
-    - **Link**: [PDF](http://documents.worldbank.org/curated/en/957161623966909227/pdf/Kenya-AFRICA-EAST-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
+    - **Date**: 2021-08-10
+    - **Link**: [Procurement Plan](http://documents.worldbank.org/curated/en/394251628582694960/pdf/Kenya-AFRICA-EAST-P117635-Kenya-Water-Security-and-Climate-Resilience-Project-Procurement-Plan.pdf)
 
 These documents cover various aspects of climate resilience and water security in Kenya, including project plans, procurement plans, and implementation status reports.

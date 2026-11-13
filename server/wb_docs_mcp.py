@@ -11,7 +11,7 @@ API facts verified against the live API (Nov 2026):
   "Eastern and Southern Africa" + "Western and Central Africa" (plus legacy "Africa"). `^` ORs values.
 - *_exact filters are case-sensitive ("Kenya" matches, "kenya" does not).
 - Facets return at most the top 100 values by count.
-- The API calls the country field `count`; search/filter results rename it to `country`.
+- The API calls the country field `count`; every tool result renames it to `country`.
 - Date sorting is `srt=docdt&order=desc` (`sort=` is silently ignored).
 - Malformed dates make the API return HTTP 500, so dates are validated before calling.
 - Offsets above 100000 make the API return HTTP 400.
@@ -301,9 +301,12 @@ async def get_document(
     docs = _documents(await _call({"id": doc_id}))
     if not docs:
         return {"message": f"No document has id {doc_id!r}. Use an id field from search_documents results."}
-    doc = docs[0]
-    if isinstance(doc.get("keywd"), list) and len(doc["keywd"]) > KEYWD_MAX:  # often 100-200 entries
-        doc["keywd"], doc["keywd_truncated"] = doc["keywd"][:KEYWD_MAX], True
+    doc = {("country" if k == "count" else k): v for k, v in docs[0].items()}  # renamed in place, as in _summary
+    if isinstance(doc.get("keywd"), list):  # entries often start with a space; lists run to 100-200
+        keywd = [k.strip() if isinstance(k, str) else k for k in doc["keywd"]]
+        doc["keywd"] = keywd[:KEYWD_MAX]
+        if len(keywd) > KEYWD_MAX:
+            doc["keywd_truncated"] = True
     return doc
 
 

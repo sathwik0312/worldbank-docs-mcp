@@ -26,7 +26,7 @@ class FakeAPI:
         # Raw API shape: country is "count", keywords are {"0": {"keywd": ...}, "1": ...}.
         self.doc = {"id": "1", "display_title": "A document", "docdt": "2020-01-01T00:00:00Z", "count": "Kenya",
                     "pdfurl": "http://example.org/1.pdf",
-                    "keywd": {str(i): {"keywd": f"kw{i}"} for i in range(n_keywords)}}
+                    "keywd": {str(i): {"keywd": f" kw{i} "} for i in range(n_keywords)}}  # API pads some
 
     async def __call__(self, params):
         self.calls.append(params)
@@ -127,9 +127,14 @@ def test_results_call_the_country_field_country(api):
 def test_get_document_caps_keywords_at_20(monkeypatch, n_keywords, kept, truncated):
     monkeypatch.setattr(wb, "_call", FakeAPI(n_keywords=n_keywords))
     doc = call("get_document", document_id="1")
-    assert doc["keywd"] == [f"kw{i}" for i in range(kept)]  # the first ones, in order
+    assert doc["keywd"] == [f"kw{i}" for i in range(kept)]  # the first ones, in order, stripped
     assert doc.get("keywd_truncated", False) is truncated
-    assert doc["count"] == "Kenya"  # get_document keeps every other field as the API returns it
+
+
+def test_get_document_renames_count_to_country_in_place(api):
+    doc = call("get_document", document_id="1")
+    assert doc["country"] == "Kenya" and "count" not in doc
+    assert list(doc) == ["id", "display_title", "docdt", "country", "pdfurl", "keywd"]  # same position
 
 
 # ---------- validation hints (returned as results, API never called) ----------

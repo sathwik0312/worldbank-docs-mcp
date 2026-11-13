@@ -42,7 +42,8 @@ This set was run after two server output changes: search/filter results call the
 
 Two earlier sets of 18 runs with the same prompt also scored 18/18, with the same variations
 (Q1 tie order, one Q6 run without links). In those, Q2 cited 7 of 10 links per run.
-`examples/q1.txt`–`q6.txt` are run 1 of the first set, except `q2.txt`, which is run 1 of the final set.
+`examples/q1.txt`–`q6.txt` are run 1 of the final set above (`python scripts/check_citations.py examples`
+grades them: Q2–Q6 pass; Q1 fails most replays on the tie-order document below and passed 1 of 8).
 
 ## Experiment: where the `country` field goes
 
