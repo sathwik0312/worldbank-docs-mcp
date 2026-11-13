@@ -155,7 +155,9 @@ All of these were found by calling the API, not from the docs:
 4. **Counts-line experiment (reverted):** adding "When a tool returns counts, include them in the answer"
    made Q3 give correct counts, but Q5 still gave none and Q6 dropped its PDF links in 3/3 runs (links
    came back with the line removed). Correct citations matter more than counts, so the line was reverted.
-5. **Result:** 18/18 over 3 runs per question with the final prompt ([eval/results.md](eval/results.md)).
+5. **Field order (kept the rename, fixed the order):** moving `country` after `pdfurl` dropped Q2 from
+   10/10 to 0/10 links per run. Field position in tool output affects what a 7B model copies.
+6. **Result:** 18/18 over 3 runs per question with the final prompt ([eval/results.md](eval/results.md)).
 
 ## Verification
 
@@ -175,13 +177,13 @@ python scripts/check_citations.py --self-test
 
 ## Examples
 
-Real runs from [examples/](examples/) (round A). Long lists are shortened with "…".
+Real runs from [examples/](examples/) (round A; Q2 is from the final set). Long lists are shortened with "…".
 
 **Q2. Find documents about education financing in Sub-Saharan Africa published between 2019 and 2022.**
 
 ```
--> filter_documents {"start_date": "2019-01-01", "end_date": "2022-12-31", "rows": 10, "region": "Sub-Saharan Africa", "topic": "Education"}
-<- 6235 chars
+-> filter_documents {"region": "Sub-Saharan Africa", "topic": "Education", "start_date": "2019-01-01", "end_date": "2022-12-31", "rows": 10}
+<- 6255 chars
 ```
 ```
 1. **Final Evaluation of the Transparency of the Mauritanian Education Budget (TOME) Project**
@@ -189,21 +191,23 @@ Real runs from [examples/](examples/) (round A). Long lists are shortened with "
    - Document Type: Report
    - Major Document Type: Publications & Research
    - Country: Mauritania
-   - [Abstract](http://documents.worldbank.org/curated/en/352401647610255802/pdf/Final-Evaluation-of-the-Transparency-of-the-Mauritanian-Education-Budget-TOME-Project.pdf)
-…
-3. **Uganda - COVID-19 Emergency Education Response Project**
-   - Date: 2022-06-29
-   - Document Type: Implementation Completion and Results Report
-   - Major Document Type: Project Documents
-   - Country: Uganda
-   - [Abstract](http://documents.worldbank.org/curated/en/750441657068170346/pdf/Uganda-COVID-19-Emergency-Education-Response-Project.pdf)
+   - [PDF Link](http://documents.worldbank.org/curated/en/352401647610255802/pdf/Final-Evaluation-of-the-Transparency-of-the-Mauritanian-Education-Budget-TOME-Project.pdf)
+   - Abstract: This report is the final evaluation of the Transparency of the Mauritanian Education Budget (TOME) project …
+
+2. **Cameroon - Systematic Country Diagnostic : An Update**
+   - Date: 2022-06-30
+   - Document Type: Systematic Country Diagnostic
+   - Major Document Type: Country Focus
+   - Country: Cameroon
+   - [PDF Link](http://documents.worldbank.org/curated/en/446021657067054458/pdf/Cameroon-Systematic-Country-Diagnostic-An-Update.pdf)
 …
 10. **Chad - Education Sector Reform Project**
     - Date: 2022-04-30
     - Document Type: Implementation Completion and Results Report
     - Major Document Type: Project Documents
     - Country: Chad
-    - [Abstract](http://documents.worldbank.org/curated/en/833361653657080816/pdf/Chad-Education-Sector-Reform-Project.pdf)
+    - [PDF Link](http://documents.worldbank.org/curated/en/833361653657080816/pdf/Chad-Education-Sector-Reform-Project.pdf)
+    - Abstract: Ratings for the Education Sector Reform Project for Chad were as follows: …
 ```
 
 **Q4. Find the most recent economic sector work on Indonesia.**
@@ -285,10 +289,9 @@ validation, the "no filters" hint, the unknown facet field hint, the `count` →
 - **Q6 returns older documents:** most date from 1985–2018, because results are sorted by relevance.
 - **Q3 may omit counts:** it lists the most frequent document types in the correct order but usually
   without their counts. A prompt line that fixed this cost Q6 its PDF links, so it was reverted.
-- **The model sometimes leaves out PDF links:** Q6 run 2 had none (and run 1 in the latest set). In
-  `examples/q2.txt`, 3 of the 10 cited documents have no link even though the API returns a `pdfurl` for
-  all three (checked against both the search result and `get_document`), so it is the model omitting them,
-  not missing data. The latest set's Q2 runs linked all 10. Field order matters too (see API findings).
+- **The model sometimes leaves out PDF links even when the API returns them:** seen in older Q2 runs
+  (3 of 10 unlinked, though the API returns a `pdfurl` for all three) and in Q6 run 1 of the final set
+  (no links). The final Q2 runs linked 10 of 10.
 - **7B variance:** even at temperature 0, link inclusion varied between identical runs. Three runs per
   question is a small sample.
 - **API limits:** facets stop at 100 values; tie order is non-deterministic.

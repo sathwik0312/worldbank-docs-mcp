@@ -2,8 +2,8 @@ QUESTION: Find documents about education financing in Sub-Saharan Africa publish
 
 === TRACE (stderr) ===
 model=wb-qwen:latest tools=['search_documents', 'filter_documents', 'get_document', 'get_facets']
--> filter_documents {"start_date": "2019-01-01", "end_date": "2022-12-31", "rows": 10, "region": "Sub-Saharan Africa", "topic": "Education"}
-<- 6235 chars
+-> filter_documents {"region": "Sub-Saharan Africa", "topic": "Education", "start_date": "2019-01-01", "end_date": "2022-12-31", "rows": 10}
+<- 6255 chars
 
 === ANSWER (stdout) ===
 Here are some documents about education financing in Sub-Saharan Africa published between 2019 and 2022:
@@ -13,66 +13,73 @@ Here are some documents about education financing in Sub-Saharan Africa publishe
    - Document Type: Report
    - Major Document Type: Publications & Research
    - Country: Mauritania
-   - [Abstract](http://documents.worldbank.org/curated/en/352401647610255802/pdf/Final-Evaluation-of-the-Transparency-of-the-Mauritanian-Education-Budget-TOME-Project.pdf)
+   - [PDF Link](http://documents.worldbank.org/curated/en/352401647610255802/pdf/Final-Evaluation-of-the-Transparency-of-the-Mauritanian-Education-Budget-TOME-Project.pdf)
+   - Abstract: This report is the final evaluation of the Transparency of the Mauritanian Education Budget (TOME) project conducted by the NGO Ecodev in the Islamic Republic of Mauritania between 2017 and 2021.
 
 2. **Cameroon - Systematic Country Diagnostic : An Update**
    - Date: 2022-06-30
    - Document Type: Systematic Country Diagnostic
    - Major Document Type: Country Focus
    - Country: Cameroon
+   - [PDF Link](http://documents.worldbank.org/curated/en/446021657067054458/pdf/Cameroon-Systematic-Country-Diagnostic-An-Update.pdf)
 
 3. **Uganda - COVID-19 Emergency Education Response Project**
    - Date: 2022-06-29
    - Document Type: Implementation Completion and Results Report
    - Major Document Type: Project Documents
    - Country: Uganda
-   - [Abstract](http://documents.worldbank.org/curated/en/750441657068170346/pdf/Uganda-COVID-19-Emergency-Education-Response-Project.pdf)
+   - [PDF Link](http://documents.worldbank.org/curated/en/750441657068170346/pdf/Uganda-COVID-19-Emergency-Education-Response-Project.pdf)
+   - Abstract: Ratings for the Coronavirus Disease 2019 (COVID-19) Emergency Education Response Project for Uganda were as follows: outcome and Bank performance was highly satisfactory, and monitoring and evaluation (M and E) quality was substantial.
 
 4. **Somalia - Third Phase of the Recurrent Cost and Reform Financing Project : Additional Financing**
    - Date: 2022-06-09
    - Document Type: Project Paper
    - Major Document Type: Project Documents
    - Country: Somalia
+   - [PDF Link](http://documents.worldbank.org/curated/en/373981655916545478/pdf/Somalia-Third-Phase-of-the-Recurrent-Cost-and-Reform-Financing-Project-Additional-Financing.pdf)
 
 5. **Niger - Public Sector Management for Resilience and Service Delivery Program Program-for-Results Project**
    - Date: 2022-06-07
    - Document Type: Program Document
    - Major Document Type: Project Documents
    - Country: Niger
+   - [PDF Link](http://documents.worldbank.org/curated/en/225511654867778523/pdf/Niger-Public-Sector-Management-for-Resilience-and-Service-Delivery-Program-Program-for-Results-Project.pdf)
 
 6. **Lesotho - Public Sector Modernization Project**
    - Date: 2022-05-31
    - Document Type: Implementation Completion and Results Report
    - Major Document Type: Project Documents
    - Country: Lesotho
-   - [Abstract](http://documents.worldbank.org/curated/en/557441654536734338/pdf/Lesotho-Public-Sector-Modernization-Project.pdf)
+   - [PDF Link](http://documents.worldbank.org/curated/en/557441654536734338/pdf/Lesotho-Public-Sector-Modernization-Project.pdf)
+   - Abstract: Ratings for the Public Sector Modernization Project for Lesotho were as follows: outcome and Bank performance were moderately satisfactory and monitoring and evaluation (M and E) quality was modest.
 
 7. **Understanding the Socioeconomic Differences of Urban and Camp-Based Refugees in Kenya : Comparative Analysis Brief - 2018 Kalobeyei Settlement, 2019 Kakuma Camp, and 2020-21 Urban Socioeconomic Surveys**
    - Date: 2022-05-24
    - Document Type: Working Paper
    - Major Document Type: Publications & Research
    - Country: Kenya
-   - [Abstract](http://documents.worldbank.org/curated/en/742941636119475248/pdf/Understanding-the-Socioeconomic-Differences-of-Urban-and-Camp-Based-Refugees-in-Kenya-Comparative-Analysis-Brief-2018-Kalobeyei-Settlement-2019-Kakuma-Camp-and-2020-21-Urban-Socioeconomic-Surveys.pdf)
+   - [PDF Link](http://documents.worldbank.org/curated/en/742941636119475248/pdf/Understanding-the-Socioeconomic-Differences-of-Urban-and-Camp-Based-Refugees-in-Kenya-Comparative-Analysis-Brief-2018-Kalobeyei-Settlement-2019-Kakuma-Camp-and-2020-21-Urban-Socioeconomic-Surveys.pdf)
+   - Abstract: The comparative analysis on the socioeconomic conditions of urban and camp-based refugees in Kenya builds upon the findings of the Kalobeyei, Kakuma and Urban Socioeconomic Surveys (SES). It offers an analytical understanding about key differences between refugees while providing explanations, and p...
 
 8. **Understanding the Socio-Economic Conditions of Urban Refugees in Kenya : Volume C : Urban Refugees - Results from the 2020-2021 Urban Socioeconomic Survey**
    - Date: 2022-05-24
    - Document Type: Report
    - Major Document Type: Publications & Research
    - Country: Kenya
-   - [Abstract](http://documents.worldbank.org/curated/en/184981636366231985/pdf/Volume-C-Urban-Refugees-Results-from-the-2020-2021-Urban-Socioeconomic-Survey.pdf)
+   - [PDF Link](http://documents.worldbank.org/curated/en/184981636366231985/pdf/Volume-C-Urban-Refugees-Results-from-the-2020-2021-Urban-Socioeconomic-Survey.pdf)
+   - Abstract: Forcibly displaced people (FDP) are increasingly inhabiting urban areas where, together with urban hosts, they face an array of risks and heightened vulnerabilities that need to be addressed through evidence-based policies and programs. More than half of the world’s population including FDPs live in...
 
 9. **Minutes of a Virtual Meeting of the Executive Directors of the Bank and IDA and the Boards of Directors of IFC and MIGA held on May 24, 2022 and Record of Approvals May 20 thru 24**
    - Date: 2022-05-24
    - Document Type: Minutes
    - Major Document Type: Board Documents
    - Countries: Indonesia, Armenia, Uzbekistan, Comoros
-   - [Abstract](http://documents.worldbank.org/curated/en/581451657570685786/pdf/Minutes-of-a-Virtual-Meeting-of-the-Executive-Directors-of-the-Bank-and-IDA-and-the-Boards-of-Directors-of-IFC-and-MIGA-held-on-May-24-2022-and-Record-of-Approvals-May-20-thru-24.pdf)
+   - [PDF Link](http://documents.worldbank.org/curated/en/581451657570685786/pdf/Minutes-of-a-Virtual-Meeting-of-the-Executive-Directors-of-the-Bank-and-IDA-and-the-Boards-of-Directors-of-IFC-and-MIGA-held-on-May-24-2022-and-Record-of-Approvals-May-20-thru-24.pdf)
 
 10. **Chad - Education Sector Reform Project**
     - Date: 2022-04-30
     - Document Type: Implementation Completion and Results Report
     - Major Document Type: Project Documents
     - Country: Chad
-    - [Abstract](http://documents.worldbank.org/curated/en/833361653657080816/pdf/Chad-Education-Sector-Reform-Project.pdf)
-
-These documents cover various aspects of education financing and reforms in different countries within Sub-Saharan Africa.
+    - [PDF Link](http://documents.worldbank.org/curated/en/833361653657080816/pdf/Chad-Education-Sector-Reform-Project.pdf)
+    - Abstract: Ratings for the Education Sector Reform Project for Chad were as follows: outcome and Bank performance was satisfactory and monitoring and evaluation (M and E) quality was high. Some lessons learned included: support of community teachers (CTs) is an important lever in ensuring that schools remain open.
