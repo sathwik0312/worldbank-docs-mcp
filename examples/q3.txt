@@ -1,0 +1,22 @@
+QUESTION: What document types does the World Bank publish most frequently?
+
+=== TRACE (stderr) ===
+model=wb-qwen:latest tools=['search_documents', 'filter_documents', 'get_document', 'get_facets']
+-> get_facets {"field": "document_type"}
+<- 5035 chars
+
+=== ANSWER (stdout) ===
+The World Bank publishes the following document types most frequently:
+
+1. Procurement Plan
+2. Implementation Status and Results Report
+3. Auditing Document
+4. Working Paper
+5. Brief
+6. Agreement
+7. Environmental Assessment
+8. Report
+9. Announcement
+10. Project Information Document
+
+These document types are among the most commonly published by the World Bank.

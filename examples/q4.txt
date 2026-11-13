@@ -1,0 +1,15 @@
+QUESTION: Find the most recent economic sector work on Indonesia.
+
+=== TRACE (stderr) ===
+model=wb-qwen:latest tools=['search_documents', 'filter_documents', 'get_document', 'get_facets']
+-> filter_documents {"country": "Indonesia", "newest_first": true, "rows": 1, "major_document_type": "Economic & Sector Work"}
+<- 720 chars
+
+=== ANSWER (stdout) ===
+The most recent economic sector work on Indonesia is titled "Indonesia - Country Private Sector Diagnostic". Here are the details:
+
+- **Title**: Indonesia - Country Private Sector Diagnostic
+- **Date**: 2026-10-05
+- **Link**: [Download PDF](https://documents.worldbank.org/curated/en/099753310052628862/pdf/IDU-2c04a71f-c12a-4c70-b9f9-a1111c195bc1.pdf)
+
+The abstract provides an overview of the document, noting that Indonesia has seen rapid economic growth and significant poverty reduction, driven by the private sector. However, growth has slowed due to restrictions that have insulated dominant firms, hindering investment in higher-productivity and higher-paying sectors.

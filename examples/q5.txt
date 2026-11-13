@@ -1,0 +1,110 @@
+QUESTION: List all languages the World Bank publishes documents in.
+
+=== TRACE (stderr) ===
+model=wb-qwen:latest tools=['search_documents', 'filter_documents', 'get_document', 'get_facets']
+-> get_facets {"field": "language"}
+<- 3431 chars
+
+=== ANSWER (stdout) ===
+The World Bank publishes documents in the following languages:
+
+- English
+- French
+- Spanish
+- Arabic
+- Portuguese
+- Russian
+- Chinese
+- Vietnamese
+- Bahasa (Indonesian)
+- Romanian
+- Japanese
+- Turkish
+- Chinese|English
+- Khmer
+- Ukrainian
+- Mongolian
+- Albanian
+- English|French
+- Thai
+- German
+- Serbian
+- Laotian
+- Polish
+- Bosnian
+- English|Vietnamese
+- Croatian
+- Dari
+- Armenian
+- Bulgarian
+- English|Russian
+- Pashto
+- Burmese
+- Indonesian-Malay
+- Georgian
+- Urdu
+- Arabic|English
+- Hindi
+- English|Spanish
+- Macedonian
+- Indonesian
+- Korean
+- English|Portuguese
+- Tetum
+- Bahasa (Indonesian)|English
+- Uzbek
+- English|Hindi
+- Bengali
+- Swahili
+- Nepali
+- Azerbaijani
+- Bangla
+- English|Turkish
+- Farsi
+- Kazakh
+- Cambodian
+- Slovak
+- English|French|Spanish
+- Somali
+- Hungarian
+- Bokmål
+- Italian
+- Serbo-Croatian
+- Amharic
+- Greek
+- Tajik
+- Telugu
+- Dutch|Kalaallisut, Greenlandic
+- English|Mongolian
+- Lao
+- Sindhi
+- Slovak|sl
+- Swedish
+- Arabic|English|French
+- Armenian|Luhya
+- Burmese|English
+- Guarani
+- Montenegrin
+- Norwegian
+- Quechua
+- Setswana
+- English|Romanian
+- Latvian
+- Sinhala
+- sp
+- Amharic|English
+- Cambodian|English
+- English|Laotian
+- English|Polish
+- Finnish
+- Malayalam
+- Tamil
+- Albanian|English
+- Assamese
+- Aymara
+- Dutch
+- English|Georgian
+- English|Ukrainian
+- Kyrgyz
+- Malagasy
+- Tagalog-TGL|Tajik

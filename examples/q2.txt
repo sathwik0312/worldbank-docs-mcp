@@ -1,0 +1,78 @@
+QUESTION: Find documents about education financing in Sub-Saharan Africa published between 2019 and 2022.
+
+=== TRACE (stderr) ===
+model=wb-qwen:latest tools=['search_documents', 'filter_documents', 'get_document', 'get_facets']
+-> filter_documents {"start_date": "2019-01-01", "end_date": "2022-12-31", "rows": 10, "region": "Sub-Saharan Africa", "topic": "Education"}
+<- 6235 chars
+
+=== ANSWER (stdout) ===
+Here are some documents about education financing in Sub-Saharan Africa published between 2019 and 2022:
+
+1. **Final Evaluation of the Transparency of the Mauritanian Education Budget (TOME) Project**
+   - Date: 2022-08-03
+   - Document Type: Report
+   - Major Document Type: Publications & Research
+   - Country: Mauritania
+   - [Abstract](http://documents.worldbank.org/curated/en/352401647610255802/pdf/Final-Evaluation-of-the-Transparency-of-the-Mauritanian-Education-Budget-TOME-Project.pdf)
+
+2. **Cameroon - Systematic Country Diagnostic : An Update**
+   - Date: 2022-06-30
+   - Document Type: Systematic Country Diagnostic
+   - Major Document Type: Country Focus
+   - Country: Cameroon
+
+3. **Uganda - COVID-19 Emergency Education Response Project**
+   - Date: 2022-06-29
+   - Document Type: Implementation Completion and Results Report
+   - Major Document Type: Project Documents
+   - Country: Uganda
+   - [Abstract](http://documents.worldbank.org/curated/en/750441657068170346/pdf/Uganda-COVID-19-Emergency-Education-Response-Project.pdf)
+
+4. **Somalia - Third Phase of the Recurrent Cost and Reform Financing Project : Additional Financing**
+   - Date: 2022-06-09
+   - Document Type: Project Paper
+   - Major Document Type: Project Documents
+   - Country: Somalia
+
+5. **Niger - Public Sector Management for Resilience and Service Delivery Program Program-for-Results Project**
+   - Date: 2022-06-07
+   - Document Type: Program Document
+   - Major Document Type: Project Documents
+   - Country: Niger
+
+6. **Lesotho - Public Sector Modernization Project**
+   - Date: 2022-05-31
+   - Document Type: Implementation Completion and Results Report
+   - Major Document Type: Project Documents
+   - Country: Lesotho
+   - [Abstract](http://documents.worldbank.org/curated/en/557441654536734338/pdf/Lesotho-Public-Sector-Modernization-Project.pdf)
+
+7. **Understanding the Socioeconomic Differences of Urban and Camp-Based Refugees in Kenya : Comparative Analysis Brief - 2018 Kalobeyei Settlement, 2019 Kakuma Camp, and 2020-21 Urban Socioeconomic Surveys**
+   - Date: 2022-05-24
+   - Document Type: Working Paper
+   - Major Document Type: Publications & Research
+   - Country: Kenya
+   - [Abstract](http://documents.worldbank.org/curated/en/742941636119475248/pdf/Understanding-the-Socioeconomic-Differences-of-Urban-and-Camp-Based-Refugees-in-Kenya-Comparative-Analysis-Brief-2018-Kalobeyei-Settlement-2019-Kakuma-Camp-and-2020-21-Urban-Socioeconomic-Surveys.pdf)
+
+8. **Understanding the Socio-Economic Conditions of Urban Refugees in Kenya : Volume C : Urban Refugees - Results from the 2020-2021 Urban Socioeconomic Survey**
+   - Date: 2022-05-24
+   - Document Type: Report
+   - Major Document Type: Publications & Research
+   - Country: Kenya
+   - [Abstract](http://documents.worldbank.org/curated/en/184981636366231985/pdf/Volume-C-Urban-Refugees-Results-from-the-2020-2021-Urban-Socioeconomic-Survey.pdf)
+
+9. **Minutes of a Virtual Meeting of the Executive Directors of the Bank and IDA and the Boards of Directors of IFC and MIGA held on May 24, 2022 and Record of Approvals May 20 thru 24**
+   - Date: 2022-05-24
+   - Document Type: Minutes
+   - Major Document Type: Board Documents
+   - Countries: Indonesia, Armenia, Uzbekistan, Comoros
+   - [Abstract](http://documents.worldbank.org/curated/en/581451657570685786/pdf/Minutes-of-a-Virtual-Meeting-of-the-Executive-Directors-of-the-Bank-and-IDA-and-the-Boards-of-Directors-of-IFC-and-MIGA-held-on-May-24-2022-and-Record-of-Approvals-May-20-thru-24.pdf)
+
+10. **Chad - Education Sector Reform Project**
+    - Date: 2022-04-30
+    - Document Type: Implementation Completion and Results Report
+    - Major Document Type: Project Documents
+    - Country: Chad
+    - [Abstract](http://documents.worldbank.org/curated/en/833361653657080816/pdf/Chad-Education-Sector-Reform-Project.pdf)
+
+These documents cover various aspects of education financing and reforms in different countries within Sub-Saharan Africa.
