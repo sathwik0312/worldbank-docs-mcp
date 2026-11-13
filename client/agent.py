@@ -1,4 +1,4 @@
-"""Agent loop: an OpenAI-compatible LLM (Ollama by default, Groq via env vars) calling the World Bank MCP server.
+"""Agent loop: an OpenAI-compatible LLM (Ollama by default; only Ollama tested) calling the World Bank MCP server.
 
 Usage:
     python client/agent.py "What document types does the World Bank publish most frequently?"
@@ -6,7 +6,7 @@ Usage:
 
 Env (defaults target local Ollama):
     LLM_BASE_URL=http://localhost:11434/v1   LLM_MODEL=wb-qwen:latest   LLM_API_KEY=ollama
-    Groq: LLM_BASE_URL=https://api.groq.com/openai/v1 LLM_MODEL=llama-3.1-8b-instant LLM_API_KEY=<key>
+    Groq (untested): LLM_BASE_URL=https://api.groq.com/openai/v1 LLM_MODEL=llama-3.1-8b-instant LLM_API_KEY=<key>
 
 Tool calls and result sizes are logged to stderr; only the final answer goes to stdout.
 """

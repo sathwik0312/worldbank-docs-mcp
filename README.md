@@ -12,7 +12,7 @@ model makes, feeds the results back, and prints the final answer. Tool calls go 
 
 ```
 server/wb_docs_mcp.py      FastMCP server, 4 tools
-client/agent.py            agent loop (OpenAI-compatible: Ollama by default, Groq via env vars)
+client/agent.py            agent loop (OpenAI-compatible; tested with Ollama)
 ollama/Modelfile           wb-qwen = qwen2.5:7b, num_ctx 16384, temperature 0
 scripts/run_eval.py        run the 6 test questions N times -> eval/runs/
 scripts/check_citations.py replay checker (is every citation real?) + --self-test
@@ -81,7 +81,8 @@ python client/agent.py          # interactive; blank line or Ctrl-D exits
 - **Fast enough:** ~27 tok/s generation on an M-series Mac (measured 27.4–27.8 tok/s on an Apple M5);
   a question takes 10–70 s depending on how many tool calls it needs.
 
-To use Groq instead, change only env vars:
+The client uses the OpenAI-compatible API, so other providers such as Groq should work by setting the 3 env vars;
+only Ollama was tested. For Groq that would be
 `LLM_BASE_URL=https://api.groq.com/openai/v1 LLM_MODEL=llama-3.1-8b-instant LLM_API_KEY=<your key>`.
 Defaults are `http://localhost:11434/v1`, `wb-qwen:latest`, `ollama`.
 
@@ -167,9 +168,12 @@ All of these were found by calling the API, not from the docs:
 logged tool calls, applies the client's own `fit()` truncation so it sees exactly what the model saw,
 then checks that every cited title exists in those results with the stated date, that every link is a
 `pdfurl` from them, and a per-question check (e.g. Q3 top 5 in order; any counts given must be correct).
+If a cited document or link is missing, each search is replayed with `rows` + 5. One found only there is
+reported as "pass (tie at page boundary)" (the API breaks relevance ties at random); anything else fails.
 
 `--self-test` builds answers from live results and plants an invented title, a wrong date, a fake link,
-a swapped ranking and a wrong count. It confirms each is caught and that the real entries pass.
+a swapped ranking and a wrong count. It confirms each is caught and that the real entries pass. It also
+cites a document from position `rows` + 2 (must pass as a tie) and an invented one (must still fail).
 
 ```bash
 python scripts/run_eval.py --runs 3     # needs Ollama running

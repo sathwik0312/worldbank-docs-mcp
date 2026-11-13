@@ -11,9 +11,10 @@ own fit() truncation (so it sees exactly what the model saw), then checks the an
 - per-question criteria (fixed before the runs were graded), e.g. Q3 top 5 in order with correct
   counts if given, Q5 lists >=95% of returned languages. Counts are optional; any count given must be right.
 
-Caveat: the API breaks relevance ties non-deterministically, so a replay can return a different
-document than the run saw (see eval/results.md). Re-run the checker on a single failure before
-calling it a hallucination.
+The API breaks relevance ties non-deterministically, so a replay can return a different document
+in the last slot than the run saw (see eval/results.md). When a cited document or link is missing,
+each search is replayed with rows + 5; one found only in those extra rows is reported as
+"pass (tie at page boundary)". Anything not found there still fails.
 """
 
 import argparse
@@ -35,6 +36,9 @@ URL = re.compile(r"https?://[^\s)\]>]+")
 LIST_ITEM = r"[ ]?(?:\d+\.|[-*])\s"  # top-level only: sub-bullets are indented
 SSA = {"Sub-Saharan Africa", "Eastern and Southern Africa", "Western and Central Africa", "Africa"}
 DOC_QUESTIONS = (1, 2, 4, 6)
+TIE_ROWS = 5  # extra rows replayed to tell a tie at the page boundary from a hallucination
+MAX_ROWS = 20  # server limit on rows
+TIE = "pass (tie at page boundary)"
 
 
 def norm(s: str) -> str:
@@ -102,27 +106,56 @@ async def replay(session, text: str):
     return calls, docs, values, notes
 
 
-def check_citations(answer: str, docs: list[dict]):
-    """Return (cited docs, problems, links not in results)."""
-    visible = [(norm(d.get("display_title")), d) for d in docs]
-    visible_urls = {strip_url(d.get("pdfurl", "")) for d in docs}
-    fake_urls = [u for u in URL.findall(answer) if strip_url(u) not in visible_urls]
-    cited, problems = [], []
+async def tie_docs(session, calls: list[tuple[str, dict]]) -> list[dict]:
+    """Each search replayed with rows + TIE_ROWS. The whole result is kept, not just the extra rows:
+    it is a separate call, so tied documents can swap again (the cited one can come back at the
+    boundary while its twin moves past it)."""
+    out = []
+    for name, args in calls:
+        if name not in ("search_documents", "filter_documents"):
+            continue
+        rows = args.get("rows", 10)
+        if rows + TIE_ROWS <= MAX_ROWS:
+            out += (await call_json(session, name, {**args, "rows": rows + TIE_ROWS})).get("documents", [])
+        else:  # rows + 5 is over the server limit: fetch the next page of 5 instead
+            wider = {**args, "rows": TIE_ROWS, "offset": args.get("offset", 0) + rows}
+            out += (await call_json(session, name, wider)).get("documents", [])
+    return out
+
+
+def check_citations(answer: str, docs: list[dict], extra: list[dict] = ()):
+    """Return (cited docs, problems, links not in results, ties). `extra` is the rows + 5 replay; a
+    document or link found only there is a tie at the page boundary, not a problem."""
+    def urls(ds):
+        return {strip_url(d.get("pdfurl", "")) for d in ds}
+
+    def matches(ds, t, date):
+        hits = [d for d in ds if (vt := norm(d.get("display_title"))).startswith(t)
+                or (len(vt) > 12 and t.startswith(vt[:45]))]
+        return hits, [d for d in hits if date is None or d["docdt"][:10] == date]
+
+    fake_urls, ties, cited, problems = [], [], [], []
+    for u in URL.findall(answer):
+        if strip_url(u) not in urls(docs):
+            (ties.append(f"link {u[:70]}") if strip_url(u) in urls(extra) else fake_urls.append(u))
     for title, date, _ in items(answer):
         t = norm(title)[:45]
         if len(t) < 12:  # not a document entry
             continue
-        hits = [d for vt, d in visible if vt.startswith(t) or (len(vt) > 12 and t.startswith(vt[:45]))]
+        hits, exact = matches(docs, t, date)
+        if not exact and extra:
+            wider_hits, exact = matches([*docs, *extra], t, date)
+            hits = hits or wider_hits
+            if exact:
+                ties.append(f"{title[:60]!r} ({date})")
         if not hits:
             problems.append(f"title not in results: {title[:60]!r}")
-            continue
-        exact = [d for d in hits if date is None or d["docdt"][:10] == date]
-        if not exact:
+        elif not exact:
             problems.append(f"date {date} wrong for {title[:50]!r} "
                             f"(results: {sorted({d['docdt'][:10] for d in hits})[:3]})")
-            continue
-        cited.append(exact[0])
-    return cited, problems, fake_urls
+        else:
+            cited.append(exact[0])
+    return cited, problems, fake_urls, ties
 
 
 def count_ok(given: list[int], actual: int) -> bool:
@@ -164,7 +197,9 @@ async def grade(session, q: int, text: str, newest: tuple[set[str], str]) -> dic
     answer = text.split(ANSWER_HEADER, 1)[1].strip()
     trace = text.split(TRACE_HEADER, 1)[1].split(ANSWER_HEADER, 1)[0]
     calls, docs, values, notes = await replay(session, text)
-    cited, problems, fake_urls = check_citations(answer, docs) if q in DOC_QUESTIONS else ([], [], [])
+    cited, problems, fake_urls, ties = check_citations(answer, docs) if q in DOC_QUESTIONS else ([], [], [], [])
+    if problems or fake_urls:  # maybe a tie at the page boundary: look just past the last row
+        cited, problems, fake_urls, ties = check_citations(answer, docs, await tie_docs(session, calls))
     fails, extra = problems + [f"link not in results: {u[:70]}" for u in fake_urls], {}
 
     if not cited and not values and re.search(
@@ -204,7 +239,7 @@ async def grade(session, q: int, text: str, newest: tuple[set[str], str]) -> dic
         extra["water/sanitation titles"] = f"{water}/{len(cited)}"
     return {
         "calls": [f"{n}({', '.join(f'{k}={v!r}' for k, v in a.items() if v not in (None, False))})" for n, a in calls],
-        "fails": fails, "cited": len(cited), "notes": notes, "extra": extra,
+        "fails": fails, "ties": ties, "cited": len(cited), "notes": notes, "extra": extra,
         "links": len(URL.findall(answer)), "trimmed": trace.count("trimmed to"), "capped": "hit 8 iterations" in trace,
     }
 
@@ -248,6 +283,19 @@ async def self_test(session) -> bool:
     bad_fails = (await grade(session, 3, fake_run(call, bad), newest))["fails"]
     expect("swapped order caught", any("top 5 wrong" in f for f in bad_fails))
     expect("wrong count caught", any("wrong counts" in f for f in bad_fails))
+
+    call = ("filter_documents", {"country": "Brazil", "query": "sanitation", "rows": 5})
+    wide = (await call_json(session, "filter_documents", {**call[1], "rows": 10}))["documents"]
+    a, b, past = wide[0], wide[1], wide[6]  # past = position rows + 2, just outside the page the model saw
+
+    def entry(d):
+        return f"**{d['display_title']}**\n   - Date: {d['docdt'][:10]}\n   - [PDF]({d['pdfurl']})\n"
+    tie = await grade(session, 6, fake_run(call, f"1. {entry(a)}2. {entry(b)}3. {entry(past)}"), newest)
+    fake = await grade(session, 6, fake_run(call, f"1. {entry(a)}2. {entry(b)}3. **Brazil - Imaginary Sewerage Project "
+                                                  f"for Testing**\n   - Date: 2020-01-01\n"), newest)
+    print("page boundary (document at position rows+2, then an invented one):")
+    expect("rows+2 document passes as a tie", not tie["fails"] and len(tie["ties"]) == 2)  # title + link
+    expect("invented document still fails", any("Imaginary" in f for f in fake["fails"]) and not fake["ties"])
     return ok
 
 
@@ -268,19 +316,23 @@ async def main() -> int:
             print(f"no runs in {args.runs_dir}; run scripts/run_eval.py first")
             return 1
         newest = await newest_esw_indonesia(session)
-        passes, totals = Counter(), Counter()
+        passes, ties, totals = Counter(), Counter(), Counter()
         for f in files:
             q = int(f.name[1])
             r = await grade(session, q, f.read_text(), newest)
             totals[q] += 1
             passes[q] += not r["fails"]
-            print(f"{f.stem} {'PASS' if not r['fails'] else 'FAIL'} cited={r['cited']} links={r['links']} "
+            ties[q] += bool(r["ties"]) and not r["fails"]
+            status = "FAIL" if r["fails"] else TIE if r["ties"] else "PASS"
+            print(f"{f.stem} {status} cited={r['cited']} links={r['links']} "
                   f"trimmed={r['trimmed']} capped={r['capped']} {r['extra']}")
-            for line in r["calls"] + [f"note: {n}" for n in r["notes"]] + [f"FAIL: {x}" for x in r["fails"]]:
+            lines = r["calls"] + [f"note: {n}" for n in r["notes"]] + [f"FAIL: {x}" for x in r["fails"]]
+            for line in lines + [f"tie: {x} found in rows + {TIE_ROWS}" for x in r["ties"]]:
                 print(f"      {line[:170]}")
         print("\nsummary")
         for q in sorted(totals):
-            print(f"  Q{q} {passes[q]}/{totals[q]}  {QUESTIONS[q - 1]}")
+            tie_note = f" ({ties[q]} as ties at page boundary)" if ties[q] else ""
+            print(f"  Q{q} {passes[q]}/{totals[q]}{tie_note}  {QUESTIONS[q - 1]}")
         return 0 if passes == totals else 1
 
 

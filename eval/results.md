@@ -27,7 +27,7 @@ saw (replayed, with the client's own truncation applied) **and** the per-questio
 
 | # | Pass | Tools called (most common run) | Varied between runs |
 |---|---|---|---|
-| 1 Climate resilience, Kenya | 3/3 | `filter_documents(country="Kenya", topic="climate resilience")` → 0 results + hint → `search_documents("climate resilience Kenya", rows=10)` | One of 10 cited documents (API tie order, below). Runs 1 and 2 first failed the replay for this reason; each passed 4 of 6 regrades. |
+| 1 Climate resilience, Kenya | 3/3 | `filter_documents(country="Kenya", topic="climate resilience")` → 0 results + hint → `search_documents("climate resilience Kenya", rows=10)` | One of 10 cited documents (API tie order, below). Runs 1 and 2 pass as ties at the page boundary (below); before the checker handled ties, each passed 4 of 6 manual regrades. |
 | 2 Education financing, Sub-Saharan Africa, 2019–22 | 3/3 | `filter_documents(region="Sub-Saharan Africa", topic="Education", start_date, end_date, rows=10)` | Nothing (answers identical, 10 of 10 links). |
 | 3 Most frequent document types | 3/3 | `get_facets(document_type)` | Nothing. Correct top 10 in order, no counts. |
 | 4 Most recent ESW, Indonesia | 3/3 | `filter_documents(country="Indonesia", major_document_type="Economic & Sector Work", newest_first=true, rows=1)` | Nothing |
@@ -42,8 +42,8 @@ This set was run after two server output changes: search/filter results call the
 
 Two earlier sets of 18 runs with the same prompt also scored 18/18, with the same variations
 (Q1 tie order, one Q6 run without links). In those, Q2 cited 7 of 10 links per run.
-`examples/q1.txt`–`q6.txt` are run 1 of the final set above (`python scripts/check_citations.py examples`
-grades them: Q2–Q6 pass; Q1 fails most replays on the tie-order document below and passed 1 of 8).
+`examples/q1.txt`–`q6.txt` are run 1 of the final set above. `python scripts/check_citations.py examples`,
+run 5 times: Q2–Q6 PASS every time; Q1 "pass (tie at page boundary)" every time (the tie below).
 
 ## Experiment: where the `country` field goes
 
@@ -78,8 +78,11 @@ nice to have and the ranking is already correct without them. One added instruct
 **API tie order is non-deterministic.** For `search_documents("climate resilience Kenya", rows=10)`,
 12 identical calls returned 2 different result sets: two near-identical Kenya procurement plans
 (ids 33331272 and 33187992) swap in the 10th slot, 4 vs 8 times. A Q1 run that cited one of them
-fails a replay that happens to draw the other. Such a failure is re-graded several times and only
-counted as a hallucination if no replay contains the cited document.
+fails a replay that happens to draw the other. The checker now handles this itself: when a cited
+document or link is missing, it replays each search with `rows` + 5 and reports a document found there
+as "pass (tie at page boundary)". The two calls can swap the twins again, so it accepts the document
+anywhere in the wider result, not only in the extra 5 rows (a first version that looked only at the
+extra rows still failed 1 of 5 gradings). Anything not found there fails.
 
 **Facet counts drift.** The API adds documents during the day (Procurement Plan: 144,387 at run time,
 144,389 at replay). The checker accepts a count within 0.1% (min 5) of the replayed value. The
